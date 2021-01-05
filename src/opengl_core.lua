@@ -7,6 +7,7 @@ local swz = {x = 1, r = 1, s = 1, y = 2, g = 2, t = 2, z = 3, b = 3, p = 3, w = 
 local vector = {};
 local matrix = {};
 
+--table mult
 local mxn = function(t, a)
 	local mat = {};
 	for i = 1, t.__dimc do
@@ -65,6 +66,7 @@ local ttom = function(t)
 	end
 	return matrix.__new(mat);
 end
+
 --member function
 local vtot = function(v)
 	local tbl = {};
@@ -106,6 +108,7 @@ local cross = function(v, a)
 end
 
 local nmlz = function(v)
+	assert(getmetatable(v) == vector, type(v) .. ' cannot call normalize.');
 	local sum = 0;
 	for i = 1, v.__dim do
 		sum = sum + v.__data[i] * v.__data[i];
@@ -119,6 +122,7 @@ local nmlz = function(v)
 end
 
 local tsps = function(m)
+	assert(getmetatable(m) == matrix, type(m) .. ' cannot call transpose.');
 	local mat = {};
 	for i = 1, m.__dimr do
 		local vec = {};
@@ -131,7 +135,7 @@ local tsps = function(m)
 end
 
 local tr = function(m)
-	assert(m.__dimc == m.__dimr, 'A ' .. m.__dimc .. '*' .. m.__dimr .. ' matrix isn\'t a square matrix and it does\'t have trace.');
+	assert(getmetatable(m) == matrix and m.__dimc == m.__dimr, 'It does\'t have trace.');
 	local sum = 0;
 	for i = 1, m.__dimc do
 		sum = sum + m.__data[i].__data[i];
@@ -140,6 +144,7 @@ local tr = function(m)
 end
 
 local det = function(m, a)
+	assert(getmetatable(m), type(m) .. ' cannot call det.');
 	if(m.__dimc ~= m.__dimr) then return 0; end
 	local acc;
 	if(a == nil) then acc = 0;
@@ -176,6 +181,7 @@ local det = function(m, a)
 end
 
 local inv = function(m, a)
+	assert(getmetatable(m) == matrix, type(m) .. ' cannot call inv.');
 	assert(m.__dimc == m.__dimr, 'A ' .. m.__dimc .. '*' .. m.__dimr .. ' matrix isn\'t the square matrix and it doesn\'t have inverse.');
 	local acc;
 	if(a == nil) then acc = 0;
@@ -620,5 +626,9 @@ opengl_core.vectype = vectype;
 opengl_core.dot = dot;
 opengl_core.cross = cross;
 opengl_core.nmlz = nmlz;
+opengl_core.tsps = tsps;
+opengl_core.tr = tr;
+opengl_core.det = det;
+opengl_core.inv = inv;
 
 return opengl_core;

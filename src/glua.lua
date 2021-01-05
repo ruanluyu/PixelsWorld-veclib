@@ -64,3 +64,7 @@ dot = gl.dot;
 cross = gl.cross;
 normalize = gl.nmlz;
 vectype = gl.vectype;
+transpose = gl.tsps;
+tr = gl.tr;
+det = gl.det;
+inv = gl.inv;
