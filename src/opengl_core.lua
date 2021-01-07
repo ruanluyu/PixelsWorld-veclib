@@ -424,9 +424,7 @@ matrix.__newindex = function(t, k, v)
 	assert(type(k) == 'number', 'The matrix only index by number.');
 	assert(t.__data[k], 'Out of range');
 	assert(getmetatable(v) == 'vector', 'A ' .. type(v) .. ' cannot assign for a column of matrix.');
-	for i = 1, v.__dim do
-		t.__data[k].__data[i] = v.__data[i];
-	end
+	t.__data[k] = v;
 end
 
 matrix.__add = function(t, a)
@@ -513,7 +511,7 @@ matrix.__pow = function(t, a)
 end
 
 matrix.__len = function(t)
-	return t.__dimc, t.__dimr;
+	return t.__dimc * t.__dimr;
 end
 
 matrix.__metatable = 'matrix';
