@@ -513,7 +513,7 @@ matrix.__pow = function(t, a)
 end
 
 matrix.__len = function(t)
-	return {t.__dimc, t.__dimr};
+	return t.__dimc, t.__dimr;
 end
 
 matrix.__metatable = 'matrix';
@@ -620,9 +620,9 @@ local premat = function(t, c, r)
 end
 
 vectype = function(a)
-	if(type(a) == 'number') then return {1, 1}; end
-	if(getmetatable(a) == 'vector') then return {1, a.__dim}; end
-	if(getmetatable(a) == 'matrix') then return {2, a.__dimc, a.__dimr}; end
+	if(type(a) == 'number') then return 1, 1; end
+	if(getmetatable(a) == 'vector') then return 1, a.__dim; end
+	if(getmetatable(a) == 'matrix') then return 2, a.__dimc, a.__dimr; end
 	return nil;
 end
 
