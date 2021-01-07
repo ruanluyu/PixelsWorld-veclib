@@ -424,7 +424,9 @@ matrix.__newindex = function(t, k, v)
 	assert(type(k) == 'number', 'The matrix only index by number.');
 	assert(t.__data[k], 'Out of range');
 	assert(getmetatable(v) == 'vector', 'A ' .. type(v) .. ' cannot assign for a column of matrix.');
-	t.__data[k] = v;
+	for i = 1, v.__dim do
+		t.__data[k].__data[i] = v.__data[i];
+	end
 end
 
 matrix.__add = function(t, a)
