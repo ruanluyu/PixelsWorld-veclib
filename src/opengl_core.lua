@@ -489,10 +489,6 @@ matrix.__pow = function(t, a)
 		idx = idx + 1;
 		e = e // 2;
 	end
-	for i = 1, #flag do
-		print(flag[i]);
-	end
-	print(idx);
 	local n = t.__dimc;
 	local res = {};
 	for i = 1, n do
