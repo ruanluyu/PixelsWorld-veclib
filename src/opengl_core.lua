@@ -22,7 +22,7 @@ end
 
 local mxv = function(t, a)
 	local vec = {};
-	local r = #a;
+	local r = #t[1];
 	local n = #t;
 	for i = 1, r do
 		local sum = 0;
