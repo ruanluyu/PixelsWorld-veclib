@@ -7,7 +7,6 @@ v4 = vec4(10, 20, 30, 40);
 v5 = vec3(2);
 v6 = vec4(1, 2, 3, 4);
 
-
 print('v1:\n' .. v1 .. '\n');
 print('v2:\n' .. v2 .. '\n');
 print('v3:\n' .. v3 .. '\n');
@@ -17,14 +16,16 @@ print('getmetatable v1:\n' .. getmetatable(v1) .. '\n');
 
 print('normalized v1:\n' .. v1:normalize() .. '\n');
 
-print('length of v4:\n' .. #v4 .. '\n');
+print('size of v4:\n' .. #v4 .. '\n');
 print('v4 - 1:\n' .. v4 - 1 .. '\n');
 print('v3 - v4:\n' .. v3 - v4 .. '\n');
 print('v3 * 2:\n' .. v3 * 2 .. '\n');
 print('2 * v3:\n' .. 2 * v3 .. '\n');
+print('v4 / 10:\n' .. v4 / 10 .. '\n');
 
 print('v3 dot v4:\n' .. v3:dot(v4) .. '\n');
 print('v2 cross v5:\n' .. v2:cross(v5) ..  '\n');
+print('length of v3:\n' .. v3:length() .. '\n');
 
 print('v3 equle to v4:');
 print(v3 == v4);

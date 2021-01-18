@@ -62,6 +62,7 @@ end
 
 dot = gl.dot;
 cross = gl.cross;
+length = gl.length;
 normalize = gl.nmlz;
 vectype = gl.vectype;
 transpose = gl.tsps;

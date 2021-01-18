@@ -107,6 +107,15 @@ local cross = function(v, a)
 	});
 end
 
+local length = function(v)
+	assert(getmetatable(v) == 'vector', 'The length function only suppose vector.');
+	local sum = 0;
+	for i = 1, v.__dim do
+		sum = sum + v.__data[i] * v.__data[i];
+	end
+	return math.sqrt(sum);
+end
+
 local nmlz = function(v)
 	assert(getmetatable(v) == 'vector', type(v) .. ' cannot call normalize.');
 	local sum = 0;
@@ -253,6 +262,7 @@ vector.__new = function(t)
 		toarray = vtot,
 		dot = dot,
 		cross = cross,
+		length = length,
 		normalize = nmlz
 	};
 	setmetatable(vec, vector);
@@ -315,6 +325,15 @@ vector.__mul = function(a, b)
 		end
 	else
 		error('A ' .. type(b) .. " cannot be multiplied by a vector.");
+	end
+	return vector.__new(vec);
+end
+
+vector.__div = function(v, n)
+	assert(type(n) == 'number', 'Vector only can divide by number.');
+	local vec = {};
+	for i = 1, v.__dim do
+		vec[i] = v.__data[i] / n;
 	end
 	return vector.__new(vec);
 end
@@ -625,6 +644,7 @@ opengl_core.prevec = prevec;
 opengl_core.vectype = vectype;
 opengl_core.dot = dot;
 opengl_core.cross = cross;
+opengl_core.length = length;
 opengl_core.nmlz = nmlz;
 opengl_core.tsps = tsps;
 opengl_core.tr = tr;
