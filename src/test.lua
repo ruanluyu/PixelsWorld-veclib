@@ -6,23 +6,34 @@ v3 = vec4(1, vec2(2, 3), 4);
 v4 = vec4(10, 20, 30, 40);
 v5 = vec3(2);
 v6 = vec4(1, 2, 3, 4);
-print(v3 == v4);
-print(v3 == v6);
 
 print('v1:\n' .. v1 .. '\n');
 print('v2:\n' .. v2 .. '\n');
 print('v3:\n' .. v3 .. '\n');
 print('v4:\n' .. v4 .. '\n');
 
-print('normalized v3:\n' .. v3:normalize() .. '\n');
+print('getmetatable v1:\n' .. getmetatable(v1) .. '\n');
 
-print('length of v4:\n' .. #v4 .. '\n');
+print('normalized v1:\n' .. v1:normalize() .. '\n');
+
+print('size of v4:\n' .. #v4 .. '\n');
 print('v4 - 1:\n' .. v4 - 1 .. '\n');
 print('v3 - v4:\n' .. v3 - v4 .. '\n');
+print('v3 * 2:\n' .. v3 * 2 .. '\n');
+print('2 * v3:\n' .. 2 * v3 .. '\n');
+print('v4 / 10:\n' .. v4 / 10 .. '\n');
+
 print('v3 dot v4:\n' .. v3:dot(v4) .. '\n');
 print('v2 cross v5:\n' .. v2:cross(v5) ..  '\n');
+print('length of v3:\n' .. v3:length() .. '\n');
+
+print('v3 equle to v4:');
+print(v3 == v4);
+print('v3 equle to v6:');
+print(v3 == v6);
 
 print('v3[2]:\n' .. v3[2] .. '\n');
+
 print('let v3[3] = 0, then v3:');
 v3[3] = 0;
 print(v3 .. '\n');
@@ -30,7 +41,7 @@ print('v3.wzyx:\n' .. v3.wzyx .. '\n');
 print('let v4.xyz = v3.zyx, then v4:');
 v4.xyz = v3.zyx;
 print(v4 .. '\n');
-
+		
 m1 = mat2(1);
 m2 = mat3(1,5,2,8,7,9,3,6,0);
 m3 = mat4(1,vec3(2,3,4),vec2(5,6),vec2(7,8),9,10,11,12,vec4(13,14,15,16));
@@ -40,10 +51,6 @@ m6 = mat3x4(10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
 m7 = mat2x3(m3);
 m8 = mat4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
 m9 = mat4(4);
-print(m3 == m8);
-print(m3 == m9);
-print(m3 == 5);
-print(m3 == m6);
 print('m1:\n' .. m1 .. '\n');
 print('m2:\n' .. m2 .. '\n');
 print('m3:\n' .. m3 .. '\n');
@@ -52,17 +59,27 @@ print('m5:\n' .. m5 .. '\n');
 print('m6:\n' .. m6 .. '\n');
 print('m7:\n' .. m7 .. '\n');
 
+
+print('getmetatable m1:\n' .. getmetatable(m1) .. '\n');
+print('m3 equle to m8:');
+print(m3 == m8);
+print();
+print('m3 equle to m9:')
+print(m3 == m9);
+print();
 print('transposed m2:\n' .. m2:transpose() .. '\n');
 print('det of m2:\n' .. m2:det() .. '\n');
 print('inv of m2:\n' .. m2:inv() .. '\n');
 print('trace of m2:\n' .. m2:tr() .. '\n');
-
-print('length of a matrix nxm is a table {n, m}:');
-print('n is colnum of m5: ' .. (#m5));
-print('m is row of m5: ' .. (#m5) .. '\n');
+print('m2 squart:\n' .. m2 ^ 2 .. '\n');
+print('m2 inv squart:\n' .. m2 ^ -2 .. '\n');
+print('m2 ** 0:\n' .. m2 ^ 0 .. '\n');
+print('length of a matrix nxm is n*m:\n' .. #m5 .. '\n');
 print('m5 * m4:\n' .. m5 * m4 .. '\n');
 print('m6 - m5:\n' .. m6 - m5 .. '\n');
 
+print('m6 * 2\n' .. m6 * 2 .. '\n');
+print('2 * m6\n' .. 2 * m6 .. '\n');
 print('v3 * m6:\n' .. v3 * m6 .. '\n');
 print('m6 * v2:\n' .. m6 * v2 .. '\n');
 
