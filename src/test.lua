@@ -58,8 +58,8 @@ print('inv of m2:\n' .. m2:inv() .. '\n');
 print('trace of m2:\n' .. m2:tr() .. '\n');
 
 print('length of a matrix nxm is a table {n, m}:');
-print('n is colnum of m5: ' .. (#m5)[1]);
-print('m is row of m5: ' .. (#m5)[2] .. '\n');
+print('n is colnum of m5: ' .. (#m5));
+print('m is row of m5: ' .. (#m5) .. '\n');
 print('m5 * m4:\n' .. m5 * m4 .. '\n');
 print('m6 - m5:\n' .. m6 - m5 .. '\n');
 

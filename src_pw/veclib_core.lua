@@ -1,4 +1,4 @@
-local opengl_core = {};
+opengl_core = {};
 
 --swizzling transformer
 local swz = {x = 1, r = 1, s = 1, y = 2, g = 2, t = 2, z = 3, b = 3, p = 3, w = 4, a = 4, q = 4};
@@ -85,8 +85,8 @@ local mtot = function(m)
 end
 
 local dot = function(a, b)
-	assert(getmetatable(a) == vector, 'The first argument of dot is ' .. type(a) .. ', it cannot perform the dot operatiom.');
-	assert(getmetatable(b) == vector, 'The second argument of dot is ' .. type(b) .. ', it cannot perform the dot operatiom.');
+	assert(getmetatable(a) == 'vector', 'The first argument of dot is ' .. type(a) .. ', it cannot perform the dot operatiom.');
+	assert(getmetatable(b) == 'vector', 'The second argument of dot is ' .. type(b) .. ', it cannot perform the dot operatiom.');
 	assert(a.__dim == b.__dim, 'Cannot dot two vectors with different length.');
 	local sum = 0;
 	for i = 1, a.__dim do
@@ -96,8 +96,8 @@ local dot = function(a, b)
 end
 
 local cross = function(v, a)
-	assert(getmetatable(v) == vector, 'The first argument in cross is ' .. type(a) .. ', it cannot perform the cross operatiom.');
-	assert(getmetatable(a) == vector, 'The second argument in cross is ' .. type(b) .. ', it cannot perform the cross operatiom.');
+	assert(getmetatable(v) == 'vector', 'The first argument in cross is ' .. type(a) .. ', it cannot perform the cross operatiom.');
+	assert(getmetatable(a) == 'vector', 'The second argument in cross is ' .. type(b) .. ', it cannot perform the cross operatiom.');
 	assert(v.__dim == 3, 'The length of first vector in cross is ' .. v.__dim .. ', cross only support length 3.');
 	assert(a.__dim == 3, 'The length of second vector in cross is ' .. a.__dim .. ', cross only support length 3.');
 	return vector.__new({
@@ -108,7 +108,7 @@ local cross = function(v, a)
 end
 
 local nmlz = function(v)
-	assert(getmetatable(v) == vector, type(v) .. ' cannot call normalize.');
+	assert(getmetatable(v) == 'vector', type(v) .. ' cannot call normalize.');
 	local sum = 0;
 	for i = 1, v.__dim do
 		sum = sum + v.__data[i] * v.__data[i];
@@ -122,7 +122,7 @@ local nmlz = function(v)
 end
 
 local tsps = function(m)
-	assert(getmetatable(m) == matrix, type(m) .. ' cannot call transpose.');
+	assert(getmetatable(m) == 'matrix', type(m) .. ' cannot call transpose.');
 	local mat = {};
 	for i = 1, m.__dimr do
 		local vec = {};
@@ -135,7 +135,7 @@ local tsps = function(m)
 end
 
 local tr = function(m)
-	assert(getmetatable(m) == matrix and m.__dimc == m.__dimr, 'It does\'t have trace.');
+	assert(getmetatable(m) == 'matrix' and m.__dimc == m.__dimr, 'It does\'t have trace.');
 	local sum = 0;
 	for i = 1, m.__dimc do
 		sum = sum + m.__data[i].__data[i];
@@ -181,7 +181,7 @@ local det = function(m, a)
 end
 
 local inv = function(m, a)
-	assert(getmetatable(m) == matrix, type(m) .. ' cannot call inv.');
+	assert(getmetatable(m) == 'matrix', type(m) .. ' cannot call inv.');
 	assert(m.__dimc == m.__dimr, 'A ' .. m.__dimc .. '*' .. m.__dimr .. ' matrix isn\'t the square matrix and it doesn\'t have inverse.');
 	local acc;
 	if(a == nil) then acc = 0;
@@ -260,7 +260,7 @@ vector.__new = function(t)
 end
 
 vector.__eq = function(a, b)
-	if(getmetatable(a) ~= vector or getmetatable(b) ~= vector) then return false; end
+	if(getmetatable(a) ~= 'vector' or getmetatable(b) ~= 'vector') then return false; end
 	if(a.__dim ~= b.__dim) then return false; end
 	for i = 1, a.__dim do
 		if(a.__data[i] ~= b.__data[i]) then return false; end
@@ -269,13 +269,13 @@ vector.__eq = function(a, b)
 end
 
 vector.__add = function(a, b)
-	if(getmetatable(a) ~= vector) then a, b = b, a; end
+	if(getmetatable(a) ~= 'vector') then a, b = b, a; end
 	local vec = {};
 	if(type(b) == 'number') then
 		for i = 1, a.__dim do
 			vec[i] = a.__data[i] + b;
 		end;
-	elseif(getmetatable(b) == vector) then
+	elseif(getmetatable(b) == 'vector') then
 		assert(a.__dim == b.__dim, "Can't adding two vectors with different length.");
 		for i = 1, a.__dim do
 			vec[i] = a.__data[i] + b.__data[i];
@@ -299,16 +299,16 @@ vector.__unm = function(a)
 end
 
 vector.__mul = function(a, b)
-	if(getmetatable(a) ~= vector) then a, b = b, a; end
+	if(getmetatable(a) ~= 'vector') then a, b = b, a; end
 	local vec = {};
 	if(type(b) == 'number') then
 		for i = 1, a.__dim do
 			vec[i] = a.__data[i] * b;
 		end
-	elseif(getmetatable(b) == vector) then
+	elseif(getmetatable(b) == 'vector') then
 		error('To avoid confusion, the operator "*" in vector is only used to multiply by number or matrix, please use function "dot" or "cross".');
 			--return a.dot(b);
-	elseif(getmetatable(b) == matrix) then
+	elseif(getmetatable(b) == 'matrix') then
 		assert(b.__dimr == a.__dim, 'A vector cannot multiply with a matrix when the length of vector is different from the row of matrix.');
 		for i = 1, b.__dimc do
 			vec[i] = a:dot(b.__data[i]);
@@ -340,7 +340,7 @@ vector.__newindex = function(t, k, v)
 			error('A ' .. type(v) .. " can't be used to assign for a number.");
 		end
 	end
-	assert(getmetatable(v) == vector, 'A ' .. type(v) .. " can't be used to assign for a vector.")
+	assert(getmetatable(v) == 'vector', 'A ' .. type(v) .. " can't be used to assign for a vector.")
 	assert(#k <= v.__dim, 'The vector supplied does not have enough length.')
 	for i = 1, #k do
 		local c = k:sub(i, i);
@@ -373,18 +373,20 @@ vector.__index = function(t, k)
 end
 
 vector.__concat = function(t, a)
-	if(getmetatable(t) == vector) then return vector.__tostring(t) .. a;
+	if(getmetatable(t) == 'vector') then return vector.__tostring(t) .. a;
 	else return t .. vector.__tostring(a); end
 end
 
 vector.__tostring = function (a)
 	local str = "[" .. a.__data[1];
 	for i = 2, a.__dim do
-		str = str .. ',' .. a.__data[i];
+		str = str .. ', ' .. a.__data[i];
 	end
 	str = str .. ']';
 	return str;
 end
+
+vector.__metatable = 'vector';
 
 matrix.__new = function(t)
 	local mat = {
@@ -402,7 +404,7 @@ matrix.__new = function(t)
 end
 
 matrix.__eq = function(a, b)
-	if(getmetatable(a) ~= matrix or getmetatable(b) ~= matrix) then return false; end
+	if(getmetatable(a) ~= 'matrix' or getmetatable(b) ~= 'matrix') then return false; end
 	if(a.__dimc ~= b.__dimc or a.__dimr ~= b.__dimr) then return false; end
 	for i = 1, a.__dimc do
 		for j = 1, a.__dimr do
@@ -421,13 +423,13 @@ end
 matrix.__newindex = function(t, k, v)
 	assert(type(k) == 'number', 'The matrix only index by number.');
 	assert(t.__data[k], 'Out of range');
-	assert(getmetatable(v) == vector, 'A ' .. type(v) .. ' cannot assign for a column of matrix.');
+	assert(getmetatable(v) == 'vector', 'A ' .. type(v) .. ' cannot assign for a column of matrix.');
 	t.__data[k] = v;
 end
 
 matrix.__add = function(t, a)
-	if(getmetatable(t) ~= matrix) then t, a = a, t; end
-	assert(getmetatable(a) == matrix, 'A ' .. type(a).. ' cannot add with matrix.');
+	if(getmetatable(t) ~= 'matrix') then t, a = a, t; end
+	assert(getmetatable(a) == 'matrix', 'A ' .. type(a).. ' cannot add with matrix.');
 	assert(t.__dimc == a.__dimc and t.__dimr == a.__dimr, 'Cannot adding two matrix with different number of row or column.');
 	local mat = {};
 	for i = 1, t.__dimc do
@@ -457,21 +459,21 @@ matrix.__unm = function(t)
 end
 
 matrix.__mul = function(t, a)
-	if(getmetatable(t) ~= matrix) then t, a = a, t; end
-	assert(type(a) == 'number' or getmetatable(a) == vector or getmetatable(a) == matrix, 'A ' .. type(a) .. ' cannot multiply with matrix.');
+	if(getmetatable(t) ~= 'matrix') then t, a = a, t; end
+	assert(type(a) == 'number' or getmetatable(a) == 'vector' or getmetatable(a) == 'matrix', 'A ' .. type(a) .. ' cannot multiply with matrix.');
 	local mat = {};
 	if(type(a) == 'number') then return mxn(t, a);
-	elseif(getmetatable(a) == vector) then
+	elseif(getmetatable(a) == 'vector') then
 		assert(a.__dim == t.__dimc, 'A matrix cannot multiply with a vector when the column of matrix is different from the length of vector.');
 		return vector.__new(mxv(t:toarray(), a:toarray()));
-	elseif(getmetatable(a) == matrix) then
+	elseif(getmetatable(a) == 'matrix') then
 		assert(t.__dimc == a.__dimr, 'Two matrix cannot multiply when the column of left matrix is different from the row of right matrix.');
 		return ttom(mxm(t:toarray(), a:toarray()));
 	end
 end
 
 matrix.__pow = function(t, a)
-	assert(getmetatable(t) == matrix, 'Cannot pow ' .. type(t) .. ' and ' .. type(a) .. '.');
+	assert(getmetatable(t) == 'matrix', 'Cannot pow ' .. type(t) .. ' and ' .. type(a) .. '.');
 	assert(t.__dimc == t.__dimr, 'Only square matrix can pow.');
 	local e = math.floor(a);
 	assert(type(a) == 'number' and e == a, 'The exponent must be integer.');
@@ -509,11 +511,13 @@ matrix.__pow = function(t, a)
 end
 
 matrix.__len = function(t)
-	return {t.__dimc, t.__dimr};
+	return t.__dimc * t.__dimr;
 end
 
+matrix.__metatable = 'matrix';
+
 matrix.__concat = function(t, a)
-	if(getmetatable(t) == matrix) then return matrix.__tostring(t) .. a;
+	if(getmetatable(t) == 'matrix') then return matrix.__tostring(t) .. a;
 	else return t .. matrix.__tostring(a); end
 end
 
@@ -521,7 +525,7 @@ matrix.__tostring = function(t)
 	local str = '[';
 	str = str .. vector.__tostring(t.__data[1]);
 	for i = 2, t.__dimc do
-		str = str .. ',' .. vector.__tostring(t.__data[i]);
+		str = str .. ', ' .. vector.__tostring(t.__data[i]);
 	end
 	return str .. ']';
 end
@@ -536,7 +540,7 @@ local contect = function(arg, num)
 		if(type(arg[idx]) == 'number') then
 			tbl[i] = arg[idx];
 			idx = idx + 1;
-		elseif(getmetatable(arg[idx]) == vector or getmetatable(arg[idx]) == matrix) then
+		elseif(getmetatable(arg[idx]) == 'vector' or getmetatable(arg[idx]) == 'matrix') then
 			tbl[i] = arg[idx].__data[iidx];
 			iidx = iidx + 1;
 			if(iidx > arg[idx].__dim) then
@@ -564,7 +568,7 @@ end
 
 local premat = function(t, c, r)
 	local mat = {};
-	if(#t == 1 and (type(t[1]) == 'number' or getmetatable(t[1]) == matrix)) then
+	if(#t == 1 and (type(t[1]) == 'number' or getmetatable(t[1]) == 'matrix')) then
 		local a = t[1];
 		if(type(t[1]) == 'number') then
 			assert(c == r, 'Only square matrix can be create by a number.');
@@ -595,7 +599,7 @@ local premat = function(t, c, r)
 			while true do
 				if(type(t[idx]) == 'number') then
 					n = n + 1;
-				elseif(getmetatable(t[idx]) == vector) then
+				elseif(getmetatable(t[idx]) == 'vector') then
 					n = n + t[idx].__dim;
 				else
 					error('A ' .. type(t[idx]) .. ' cannot be used to create a matrix.');
@@ -613,10 +617,10 @@ local premat = function(t, c, r)
 	return matrix.__new(mat);
 end
 
-local vectype = function(a)
-	if(type(a) == 'number') then return 1, 1 end
-	if(getmetatable(a) == vector) then return 1, a.__dim end
-	if(getmetatable(a) == matrix) then return 2, a.__dimc, a.__dimr end
+vectype = function(a)
+	if(type(a) == 'number') then return 1, 1; end
+	if(getmetatable(a) == 'vector') then return 1, a.__dim; end
+	if(getmetatable(a) == 'matrix') then return 2, a.__dimc, a.__dimr; end
 	return nil;
 end
 
