@@ -96,8 +96,8 @@ local dot = function(a, b)
 end
 
 local cross = function(v, a)
-	assert(getmetatable(v) == 'vector', 'The first argument in cross is ' .. type(a) .. ', it cannot perform the cross operatiom.');
-	assert(getmetatable(a) == 'vector', 'The second argument in cross is ' .. type(b) .. ', it cannot perform the cross operatiom.');
+	assert(getmetatable(v) == 'vector', 'The first argument in cross is ' .. type(v) .. ', it cannot perform the cross operatiom.');
+	assert(getmetatable(a) == 'vector', 'The second argument in cross is ' .. type(a) .. ', it cannot perform the cross operatiom.');
 	assert(v.__dim == 3, 'The length of first vector in cross is ' .. v.__dim .. ', cross only support length 3.');
 	assert(a.__dim == 3, 'The length of second vector in cross is ' .. a.__dim .. ', cross only support length 3.');
 	return vector.__new({
@@ -242,7 +242,7 @@ local inv = function(m, a)
 			end
 		end
 	end
-	
+
 	local res = {};
 	for i = 1, n do
 		local vec = {};
@@ -397,11 +397,11 @@ vector.__concat = function(t, a)
 end
 
 vector.__tostring = function (a)
-	local str = "[" .. a.__data[1];
+	local str = "vec" .. a.__dim  .. '(' .. a.__data[1];
 	for i = 2, a.__dim do
 		str = str .. ', ' .. a.__data[i];
 	end
-	str = str .. ']';
+	str = str .. ')';
 	return str;
 end
 
@@ -506,7 +506,7 @@ matrix.__pow = function(t, a)
 	while e > 0 do
 		flag[idx] = e % 2;
 		idx = idx + 1;
-		e = e // 2;
+		e = math.floor(e / 2);
 	end
 	local n = t.__dimc;
 	local res = {};
@@ -537,12 +537,12 @@ matrix.__concat = function(t, a)
 end
 
 matrix.__tostring = function(t)
-	local str = '[';
+	local str = 'mat' .. t.__dimc .. 'x' .. t.__dimr .. '(';
 	str = str .. vector.__tostring(t.__data[1]);
 	for i = 2, t.__dimc do
 		str = str .. ', ' .. vector.__tostring(t.__data[i]);
 	end
-	return str .. ']';
+	return str .. ')';
 end
 
 --useful function
@@ -588,7 +588,7 @@ local premat = function(t, c, r)
 		if(type(t[1]) == 'number') then
 			assert(c == r, 'Only square matrix can be create by a number.');
 			for i = 1, c do
-				vec = {};
+				local vec = {};
 				for j = 1, r do
 					if(i == j) then vec[j] = a;
 					else vec[j] = 0.0; end
@@ -598,7 +598,7 @@ local premat = function(t, c, r)
 		else
 			assert(a.__dimc >= c and a.__dimr >= r, 'The ' .. a.__dimc .. 'x' .. a.__dimr .. ' matrix is too small to create a ' .. c .. 'x' .. r .. ' matrix');
 			for i = 1, c do
-				vec = {};
+				local vec = {};
 				for j = 1, r do
 					vec[j] = a.__data[i].__data[j];
 				end
